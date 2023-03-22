@@ -1,0 +1,28 @@
+image: mcr.microsoft.com/dotnet/sdk:7.0
+build-and-test:
+  stage: test
+  variables:
+    GIT_STRATEGY: clone
+  script:
+    - 'dotnet clean'
+# replace the folder in the next line with your own test project folder    
+    - 'dotnet add ChargingStation.Test.Unit/ package ReportGenerator --version 5.1.17 >>null'
+    - 'dotnet build'
+    - 'dotnet test --collect:"XPlat Code Coverage" --logger:"junit;MethodFormat=Class;FailureBodyFormat=Verbose"'
+    - 'dotnet ~/.nuget/packages/reportgenerator/5.1.17/tools/net7.0/ReportGenerator.dll -reports:./*/*/*/coverage.cobertura.xml -targetdir:coveragereport "-reporttypes:Html;TextSummary"'
+    - cat coveragereport/Summary.txt
+  coverage:  '/Line coverage: (\d+.\d+)/'
+  artifacts:
+    when: always
+    paths:
+      - coveragereport/
+    reports:
+      junit:
+        - ./**/TestResults.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: ./**/coverage.cobertura.xml
+
+
+  
+
