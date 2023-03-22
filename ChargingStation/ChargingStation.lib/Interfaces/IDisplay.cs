@@ -9,6 +9,8 @@ namespace ChargingStation.lib.Interfaces
 {
     public class IDisplay 
     {
+
+
         void TilslutTelefon();
         void IndlaesRFID();
         void TilslutningsFejl();

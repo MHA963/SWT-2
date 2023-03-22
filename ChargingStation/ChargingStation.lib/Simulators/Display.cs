@@ -5,15 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using ChargingStation.lib.Interfaces;
 
+
 namespace ChargingStation.lib.Simulators
 {
-    internal class Display : IDisplay
+    public class Display : IDisplay
     {
         public void TilslutTelefon()
         {
             Console.WriteLine("Tilslut telefon");
         }
-
+         
         public void IndlaesRFID()
         {
             Console.WriteLine("Skabet er låst, telefonen lades nu op. Brug RFID til at låse op");
