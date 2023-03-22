@@ -18,10 +18,10 @@ namespace ChargingStation.lib.Simulators
 
         private DoorEventArgs _doorEvent = new DoorEventArgs()
         {
-            IsDoorOpen = false
+            DoorIsOpen = false
         };
 
-        public event EventHandler<DoorEventArgs> DoorEvent;
+        public event EventHandler<DoorEventArgs>? DoorEvent;
 
         public Door()
         {
@@ -46,14 +46,14 @@ namespace ChargingStation.lib.Simulators
         public virtual void DoorOpened()
         {
             IsDoorOpen = true;
-            _doorEvent.IsDoorOpen = true;
+            _doorEvent.DoorIsOpen = true;
             DoorEvent?.Invoke(this, _doorEvent);
         }
 
         public virtual void DoorClosed()
         {
             IsDoorOpen = false;
-            _doorEvent.IsDoorOpen = false;
+            _doorEvent.DoorIsOpen = false;
             DoorEvent?.Invoke(this, _doorEvent);
         }
     }

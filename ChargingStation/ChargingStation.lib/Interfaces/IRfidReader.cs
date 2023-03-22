@@ -13,7 +13,7 @@ namespace ChargingStation.lib.Interfaces
 
     public interface IRfidReader
     {
-        event EventHandler<RfidEventArgs> RfidEvent;
+        event EventHandler<RfidReader> RfidEvent;
         void RfidDetected(int id);
     }
 }

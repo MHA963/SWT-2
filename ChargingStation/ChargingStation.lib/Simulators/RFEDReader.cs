@@ -9,5 +9,13 @@ namespace ChargingStation.lib.Simulators
 {
     internal class RFEDReader : IRfidReader
     {
+        public event EventHandler<RfidReader> RfidEvent;
+
+        public void RfidDetected(int id)
+        {
+            RfidEvent?.Invoke(this,new RfidReader {Id= id});
+        }
+
+
     }
 }

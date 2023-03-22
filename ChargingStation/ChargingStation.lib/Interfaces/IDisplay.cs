@@ -11,19 +11,19 @@ namespace ChargingStation.lib.Interfaces
     {
 
 
-        void TilslutTelefon();
-        void IndlaesRFID();
-        void TilslutningsFejl();
-        void LadeskabOptaget();
-        void RFIDFejl();
+        public void TilslutTelefon();
+        public void IndlaesRFID();
+        public void TilslutningsFejl();
+        public void LadeskabOptaget();
+        public void RFIDFejl();
 
-        void FjernTelefon();
+        public void FjernTelefon();
 
-        void TelefonTilsluttet();
-        void RFIDLåst();
+        public void TelefonTilsluttet();
+        public void RFIDLåst();
 
-        void OpladerFejl();
-        void DørLaest();
+        public void OpladerFejl();
+        public void DørLaest();
 
 
 

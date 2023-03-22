@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChargingStation.lib.Interfaces
 {
-    internal class IChargeControl
+    public interface IChargeControl
     {
         public bool IsConnected { get; set; }
         public void StartCharge() { }

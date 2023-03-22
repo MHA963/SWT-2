@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace ChargingStation.lib.Interfaces
 {
-    internal class ILog
+    public interface ILog
     {
+
+        string fileName { get; set; }
+        void WriteLogEntry(string message, int id);
+        void WriteLogEntry(string message);
 
     }
 }
