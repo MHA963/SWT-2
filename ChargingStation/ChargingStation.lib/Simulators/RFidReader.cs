@@ -7,7 +7,7 @@ using ChargingStation.lib.Interfaces;
 
 namespace ChargingStation.lib.Simulators
 {
-    internal class RFEDReader : IRfidReader
+    public class RFidReader : IRfidReader
     {
         public event EventHandler<RfidReader> RfidEvent;
 

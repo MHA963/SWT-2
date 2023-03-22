@@ -9,8 +9,8 @@ namespace ChargingStation.lib.Interfaces
     public interface IChargeControl
     {
         public bool IsConnected { get; set; }
-        public void StartCharge() { }
-        public void StopCharge() { }
+        public void StartCharge();
+        public void StopCharge();
 
     }
 }

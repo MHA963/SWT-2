@@ -1,10 +1,22 @@
-﻿class Program
-{
-        static void Main(string[] args)
-        {
-				// Assemble your system here from all the classes
+﻿using ChargingStation.lib;
+using ChargingStation.lib.Interfaces;
+using ChargingStation.lib.Simulators;
 
-            bool finish = false;
+class Program
+{
+
+    static void Main(string[] args)
+        {
+        // Assemble your system here from all the classes
+        Door door = new Door();
+        RFidReader rfidReader = new RFidReader();
+        Display display = new Display();
+        ChargeControl chargeControl = new ChargeControl(display, new UsbChargerSimulator());
+        LogFile log = new LogFile("ProgramLog.txt");
+
+        var stationControl = new StationControl(rfidReader, chargeControl, door, display, log);
+
+        bool finish = false;
             do
             {
                 string input;
@@ -19,11 +31,11 @@
                         break;
 
                     case 'O':
-                        Door.OnDoorOpen();
+                        door.DoorOpened();
                         break;
 
                     case 'C':
-                        Door.OnDoorClose();
+                        door.DoorClosed();
                         break;
 
                     case 'R':
@@ -31,7 +43,7 @@
                         string idString = System.Console.ReadLine();
 
                         int id = Convert.ToInt32(idString);
-                        rfidReader.OnRfidRead(id);
+                        rfidReader.RfidDetected(id);
                         break;
 
                     default:

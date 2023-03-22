@@ -12,12 +12,13 @@ namespace ChargingStation.lib.Interfaces
         public bool DoorIsOpen { get; set; }
     }
 
-    public event EventHandler<DoorEventArgs>? DoorEvent;
-    public class IDoor
+   
+    public interface IDoor
     {
+
+        public event EventHandler<DoorEventArgs>? DoorEvent;
         public bool UnlockDoor();
         public bool LockDoor();
-       
-        private bool IsDoorLocked;
+        
     }
 }

@@ -10,7 +10,7 @@ using ChargingStation.lib.Interfaces;
 
 namespace ChargingStation.lib.Simulators
 {
-    internal class Door : IDoor
+    public class Door : IDoor
     {
         public bool IsDoorLocked { get; set; }
         public bool IsDoorOpen { get; set; }
@@ -40,6 +40,8 @@ namespace ChargingStation.lib.Simulators
         {
             if (IsDoorOpen)
                 IsDoorLocked = true;
+            
+
             return IsDoorLocked;
         }
 
