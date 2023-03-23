@@ -1,5 +1,4 @@
-﻿using ChargingStation.lib.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,9 +10,9 @@ namespace ChargingStation.lib.Simulators
 {
     public class ChargeControl : IChargeControl
     {
-        IUsbCharger _UsbCharger;
+        public IUsbCharger _UsbCharger;
         IDisplay _display;
-        public double lastCurrent { get; private set; }
+        public double LastCurrent { get; private set; }
         public bool IsConnected { get; set; }
         public enum State { Charging, NotCharging, FinishedCharging, Error }
         public State _lastState = State.NotCharging;
@@ -28,7 +27,7 @@ namespace ChargingStation.lib.Simulators
             _display = display; 
             _UsbCharger.PowerEvent += OnNewCurrent;
             IsConnected = _UsbCharger.Connected;
-            lastCurrent = _UsbCharger.PowerValue;
+            LastCurrent = _UsbCharger.PowerValue;
 
         }
         public void StartCharge()
@@ -43,9 +42,9 @@ namespace ChargingStation.lib.Simulators
 
         public void OnNewCurrent(object sender, PowerEventArgs e)
         {
-            if (e.Power == lastCurrent) return;
+            if (e.Power == LastCurrent) return;
 
-            lastCurrent = e.Power;
+            LastCurrent = e.Power;
             IsConnected = _UsbCharger.Connected;
 
             switch (e.Power)
