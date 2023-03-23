@@ -146,13 +146,55 @@ namespace ChargingStation.Test.Unit
         }
 
         [Test]
-        public void TestDoorClosedStateLocked()
+        public void TestAvailableStateDoorOpen()
         {
-            _uut._state = Locked;
-            _uut.DoorLocked(this,new DoorEventArgs(){DoorIsOpen = false});
-            Assert.That(_uut._state,Is.EqualTo(Locked));
+            _uut._state = Available;
+            _uut.DoorOpen(this,new DoorEventArgs(){DoorIsOpen = true});
+            Assert.That(_uut._state,Is.EqualTo(DoorOpen));
 
         }
+
+        [Test]
+        public void TestDoorLockedStateLocked()
+        {
+            _uut._state = DoorOpen;
+            _uut.DoorLocked(this,new DoorEventArgs(){DoorIsOpen = false});
+            _uut._charger.IsConnected=true;
+            _uut._display.RFIDLåst();
+            Assert.That(_uut._state,Is.EqualTo(Locked));
+        }
+
+
+        [Test]
+        public void TestDoorLockedStateLocked_PhoneNotConnected()
+        {
+            _uut._state = Locked;
+            _uut.DoorLocked(this,new DoorEventArgs() { DoorIsOpen = false});
+            _uut._charger.IsConnected=false;
+            _uut._display.TilslutTelefon();
+            Assert.That(_uut._state,Is.EqualTo(Locked));
+        }
+
+        [Test]
+
+        public void TestDoorOpenStateDoorOpen()
+        {
+            _uut._state = DoorOpen;
+            _uut.DoorOpen(this,new DoorEventArgs() { DoorIsOpen = true});
+            _uut._charger.IsConnected=true;
+            _uut._display.RFIDLåst();
+            Assert.That(_uut._state,Is.EqualTo(DoorOpen));
+        }
+
+        [Test]
+        public void TestDoorOpenStateLocked()
+        {
+            _uut._state = Locked;
+            _uut.IsConnected = false;
+            _uut.DoorOpen(this, new DoorEventArgs() { DoorIsOpen = true });
+            Assert.That(_uut._state, Is.EqualTo(Locked));
+        }
+
 
 
     }
