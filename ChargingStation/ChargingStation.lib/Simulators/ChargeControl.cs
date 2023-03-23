@@ -11,16 +11,21 @@ namespace ChargingStation.lib.Simulators
 {
     public class ChargeControl : IChargeControl
     {
-        public IUsbCharger _UsbCharger;
-        public IDisplay _display;
+        IUsbCharger _UsbCharger;
+        IDisplay _display;
         public double lastCurrent { get; private set; }
         public bool IsConnected { get; set; }
         public enum State { Charging, NotCharging, FinishedCharging, Error }
         public State _lastState = State.NotCharging;
         public ChargeControl(IDisplay display, IUsbCharger usbCharger)
         {
+            //if (usbCharger == null)
+            //{
+            //    throw new ArgumentNullException(nameof(usbCharger));
+            //}
+
             _UsbCharger = usbCharger;
-            _display = display;
+            _display = display; 
             _UsbCharger.PowerEvent += OnNewCurrent;
             IsConnected = _UsbCharger.Connected;
             lastCurrent = _UsbCharger.PowerValue;
