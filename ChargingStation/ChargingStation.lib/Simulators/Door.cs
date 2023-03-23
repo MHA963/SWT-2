@@ -29,20 +29,23 @@ namespace ChargingStation.lib.Simulators
             IsDoorOpen = false;
         }
 
-        public bool UnlockDoor()
+        public void UnlockDoor()
         {
-            if (!IsDoorOpen && IsDoorLocked)
-                IsDoorLocked = false;
-            return IsDoorOpen;
+            if (!IsDoorLocked)
+            {
+                return;
+            }
+            IsDoorLocked = false;
         }
 
-        public bool LockDoor()
+        public void LockDoor()
         {
-            if (IsDoorOpen)
-                IsDoorLocked = true;
-            
+            if (IsDoorOpen || IsDoorLocked)
+            {
+                return;
+            }
 
-            return IsDoorLocked;
+            IsDoorLocked = true;
         }
 
         public virtual void DoorOpened()
