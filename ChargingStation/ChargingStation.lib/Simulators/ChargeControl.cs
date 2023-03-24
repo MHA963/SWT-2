@@ -11,8 +11,8 @@ namespace ChargingStation.lib.Simulators
     public class ChargeControl : IChargeControl
     {
         public IUsbCharger _UsbCharger;
-        IDisplay _display;
-        public double LastCurrent { get; private set; }
+        public IDisplay _display;
+        public double LastCurrent { get; set; }
         public bool IsConnected { get; set; }
         public enum State { Charging, NotCharging, FinishedCharging, Error }
         public State _lastState = State.NotCharging;

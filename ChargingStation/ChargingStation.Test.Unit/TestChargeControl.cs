@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using ChargingStation.lib.Interfaces;
 using ChargingStation.lib.Simulators;
 using NSubstitute;
@@ -10,13 +11,13 @@ namespace ChargingStation.Test.Unit
     {
         private ChargeControl _chargecontrol;
         private Display _display;
-        private UsbChargerSimulator _UsbCharger;
+        private IUsbCharger _UsbCharger;
 
         [SetUp]
         public void Setup()
         {
             _display = Substitute.For<Display>();
-            _UsbCharger = Substitute.For<UsbChargerSimulator>();
+            _UsbCharger = Substitute.For<IUsbCharger>();
             _chargecontrol = new ChargeControl(_display, _UsbCharger);
             _UsbCharger.PowerEvent += (o, args) => _chargecontrol.OnNewCurrent(o, args);
         }
@@ -54,7 +55,6 @@ namespace ChargingStation.Test.Unit
         {
             double value = 3.0;
             _chargecontrol._UsbCharger.PowerEvent += Raise.EventWith(new PowerEventArgs() { Power = value });
-
             Assert.That(_chargecontrol.LastCurrent, Is.EqualTo(value));
         }
 
@@ -72,6 +72,17 @@ namespace ChargingStation.Test.Unit
         {
             _chargecontrol._UsbCharger.PowerEvent += Raise.EventWith(new PowerEventArgs() { Power = 750 });
             _UsbCharger.Received(1).StopCharge();
+            Assert.That(_chargecontrol._UsbCharger.PowerValue, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void TestCase0OnNewCurrent()
+        {
+            double initialvalue = 500.0;
+            double value = 0.0;
+
+            _chargecontrol._UsbCharger.PowerEvent += Raise.EventWith(new PowerEventArgs() { Power = initialvalue });
+            _chargecontrol._UsbCharger.PowerEvent += Raise.EventWith(new PowerEventArgs() { Power = value });
             Assert.That(_chargecontrol._UsbCharger.PowerValue, Is.EqualTo(0));
         }
     }
