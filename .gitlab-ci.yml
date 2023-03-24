@@ -15,7 +15,7 @@ build-and-test:
   artifacts:
     when: always
     paths:
-      - coveragereport/
+      - ChargingStation/coveragereport/
     reports:
       junit:
         - ./**/TestResults.xml
