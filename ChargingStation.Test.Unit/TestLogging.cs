@@ -36,6 +36,7 @@ namespace ChargingStation.Test.Unit
             var last = File.ReadLines(log.fileName).Last();
             var expected = $"{DateTime.Now}: {message}";
             Assert.That(last, Is.EqualTo(expected));
+
         }
     }
 }
