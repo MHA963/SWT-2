@@ -6,7 +6,7 @@ build-and-test:
   script:
     - 'dotnet clean'
 # replace the folder in the next line with your own test project folder    
-    - 'dotnet add ChargingStation/ChargingStation.Test.Unit/ package ReportGenerator --version 5.1.17 >>null'
+    - 'dotnet add ChargingStation.Test.Unit/ package ReportGenerator --version 5.1.17 >>null'
     - 'dotnet build'
     - 'dotnet test --collect:"XPlat Code Coverage" --logger:"junit;MethodFormat=Class;FailureBodyFormat=Verbose"'
     - 'dotnet ~/.nuget/packages/reportgenerator/5.1.17/tools/net7.0/ReportGenerator.dll -reports:./*/*/*/coverage.cobertura.xml -targetdir:coveragereport "-reporttypes:Html;TextSummary"'
@@ -15,7 +15,7 @@ build-and-test:
   artifacts:
     when: always
     paths:
-      - ChargingStation/coveragereport/
+      - coveragereport/
     reports:
       junit:
         - ./**/TestResults.xml
