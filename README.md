@@ -2,7 +2,7 @@
 ## Introduction
 This charging locker system is designed to facilitate charging of mobile phones and other devices that require a physical connection to a charger. The system works by locking a mobile phone inside a locker where it charges while the user can be away from the phone.
 
-#Usage
+# Usage
 The charging locker is intended to be used as follows (assuming the locker is not in use):
 
 1. The user opens the door of the locker.
@@ -22,5 +22,4 @@ The charging locker is intended to be used as follows (assuming the locker is no
 # System Requirements
 To use the system, a working RFID reader and a mechanical lock that can be electronically controlled are required. In addition, there must be a connected charging unit to supply power to the devices in the charging Station.
 
-# Additional Information
-For further information on using the chargingstation and setting up the system, please refer to the user manual that comes with the system.
+
