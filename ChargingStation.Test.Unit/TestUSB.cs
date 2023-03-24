@@ -45,7 +45,7 @@ namespace ChargingStation.Test.Unit
 
             pause.WaitOne(1000);
 
-            Assert.That(powerValue, Is.GreaterThan(420.69));
+            Assert.That(powerValue, Is.GreaterThan(500));
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace ChargingStation.Test.Unit
 
             usb.StartCharge();
 
-            Assert.That(value, Is.GreaterThan(420.69));
+            Assert.That(value, Is.GreaterThan(500));
         }
 
         [Test]

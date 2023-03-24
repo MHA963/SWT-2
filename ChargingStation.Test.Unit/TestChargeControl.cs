@@ -6,7 +6,7 @@ using NSubstitute;
 
 namespace ChargingStation.Test.Unit
 {
-    [TestFixture]   
+    [TestFixture]
     public class TestChargeControl
     {
         private ChargeControl _chargecontrol;
@@ -42,9 +42,6 @@ namespace ChargingStation.Test.Unit
         {
             // Sets the state previous to the test to "Charging at 500 mA"
             _chargecontrol._UsbCharger.PowerEvent += Raise.EventWith(new PowerEventArgs() { Power = 500.0 });
-           // double value = 0.0;
-
-            //_chargecontrol._UsbCharger.PowerEvent += Raise.EventWith(new PowerEventArgs() { Power = value });
             _display.Received(1).TilslutTelefon();
 
             Assert.That(_chargecontrol.LastCurrent, Is.EqualTo(500.0));
@@ -53,7 +50,7 @@ namespace ChargingStation.Test.Unit
         [Test]
         public void TestFullyCharge()
         {
-            double value = 3.0;
+            double value = 2.5;
             _chargecontrol._UsbCharger.PowerEvent += Raise.EventWith(new PowerEventArgs() { Power = value });
             Assert.That(_chargecontrol.LastCurrent, Is.EqualTo(value));
         }

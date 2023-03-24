@@ -37,8 +37,10 @@ namespace ChargingStation.Test.Unit
         [TestCase(9)]
         [TestCase(10)]
         [TestCase(100)]
+        [TestCase(1000)]
+        [TestCase(10000)]
         [TestCase(-100)]
-        public void TestRFIDDetected(int id)
+        public void TestRfidDetected(int id)
         {
             rfid.RfidDetected(id);
             Assert.That(Id, Is.EqualTo(id));

@@ -51,7 +51,6 @@ namespace ChargingStation.lib.Simulators
             {
                 case 0.0:
                     if (_lastState == State.NotCharging) return;
-                    
                     _lastState = State.NotCharging;
                     break;
                 case > 0.0 and <= 5.0:
