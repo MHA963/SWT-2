@@ -14,6 +14,8 @@ namespace ChargingStation.lib.Simulators
     {
         public bool IsDoorLocked { get; set; }
         public bool IsDoorOpen { get; set; }
+        
+        // Hvad skal den næste property bruges til?
         public int CurrentID { get; set; } = 0;
 
         private DoorEventArgs _doorEvent = new DoorEventArgs()

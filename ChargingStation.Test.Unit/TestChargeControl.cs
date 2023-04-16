@@ -10,15 +10,22 @@ namespace ChargingStation.Test.Unit
     public class TestChargeControl
     {
         private ChargeControl _chargecontrol;
-        private Display _display;
+        // Brug altid interfaces for dependencies i tests
+
+        private IDisplay _display;
         private IUsbCharger _UsbCharger;
 
         [SetUp]
         public void Setup()
         {
-            _display = Substitute.For<Display>();
+            // Brug altid interface, når Substitute.For<> bruges
+            // ellers vil testen altid bestå
+            _display = Substitute.For<IDisplay>();
             _UsbCharger = Substitute.For<IUsbCharger>();
             _chargecontrol = new ChargeControl(_display, _UsbCharger);
+
+            // Unødvendig tilknytning til dependency, som allerede er 
+            // foretaget i ChargeControls constructor
             _UsbCharger.PowerEvent += (o, args) => _chargecontrol.OnNewCurrent(o, args);
         }
 
@@ -33,6 +40,7 @@ namespace ChargingStation.Test.Unit
         public void TestNormalCharge()
         {
             _chargecontrol._UsbCharger.PowerEvent += Raise.EventWith(new PowerEventArgs() { Power = 500.0 });
+            // White box test af ChargeControl
             Assert.That(_chargecontrol.LastCurrent, Is.EqualTo(500.0));
 
         }
@@ -42,8 +50,12 @@ namespace ChargingStation.Test.Unit
         {
             // Sets the state previous to the test to "Charging at 500 mA"
             _chargecontrol._UsbCharger.PowerEvent += Raise.EventWith(new PowerEventArgs() { Power = 500.0 });
+
+            // Denne test ville altid bestå, når I bruger Display i stedet for IDisplay
+            // Og i tester for det forkerte
             _display.Received(1).TilslutTelefon();
 
+            // Gentagen, unødvendig white box test
             Assert.That(_chargecontrol.LastCurrent, Is.EqualTo(500.0));
         }
 
@@ -52,15 +64,18 @@ namespace ChargingStation.Test.Unit
         {
             double value = 2.5;
             _chargecontrol._UsbCharger.PowerEvent += Raise.EventWith(new PowerEventArgs() { Power = value });
+            // Gentagen, unødvendig white box test
             Assert.That(_chargecontrol.LastCurrent, Is.EqualTo(value));
         }
 
         [Test]
         public void TestStopCharge()
         {
+            // Denne test tester ikke, hvad dens navn indikerer
             double value = 501.0;
             _chargecontrol._UsbCharger.PowerEvent += Raise.EventWith(new PowerEventArgs() { Power = value });
 
+            // Gentagen, unødvendig white box test
             Assert.That(_chargecontrol.LastCurrent, Is.EqualTo(value));
         }
 
@@ -68,7 +83,10 @@ namespace ChargingStation.Test.Unit
         public void TestOverloadCurrent()
         {
             _chargecontrol._UsbCharger.PowerEvent += Raise.EventWith(new PowerEventArgs() { Power = 750 });
+            // Her er den rigtige test
             _UsbCharger.Received(1).StopCharge();
+
+            // Dette tester faken - helt unødvendigt
             Assert.That(_chargecontrol._UsbCharger.PowerValue, Is.EqualTo(0));
         }
 
@@ -80,6 +98,7 @@ namespace ChargingStation.Test.Unit
 
             _chargecontrol._UsbCharger.PowerEvent += Raise.EventWith(new PowerEventArgs() { Power = initialvalue });
             _chargecontrol._UsbCharger.PowerEvent += Raise.EventWith(new PowerEventArgs() { Power = value });
+            // Dette tester faken - helt unødvendigt
             Assert.That(_chargecontrol._UsbCharger.PowerValue, Is.EqualTo(0));
         }
     }

@@ -22,10 +22,14 @@ namespace ChargingStation.Test.Unit
         [TestCase(true, false)]
         public void TestDoorLock(bool DoorOpen, bool DoorLocked)
         {
+            
+	        // White box opsætning, brug metoder til at styre
+            // Der er for mange test scenarier i denne testmetode
             door.IsDoorLocked = DoorLocked;
             door.IsDoorOpen = DoorOpen;
             door.LockDoor();
 
+            // Hold test udtryk simple
             Assert.That(door.IsDoorLocked, !door.IsDoorOpen ? Is.EqualTo(true) : Is.EqualTo(false));
         }
 
@@ -35,6 +39,8 @@ namespace ChargingStation.Test.Unit
         [TestCase(false, false)]
         public void TestDoorUnlock(bool DoorOpen, bool DoorLocked)
         {
+	        // White box opsætning, brug metoder til at styre
+	        // Der er for mange test scenarier i denne testmetode
             door.IsDoorLocked = DoorLocked;
             door.IsDoorOpen = DoorOpen;
             door.UnlockDoor();

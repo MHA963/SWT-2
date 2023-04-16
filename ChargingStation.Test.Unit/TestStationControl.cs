@@ -16,24 +16,27 @@ namespace ChargingStation.Test.Unit
 {
     public class TestStationControl
     {
+        // Brug interfaces for dependencies
         private StationControl _uut;
-        private Door _door;
-        private RFidReader _rfidReader;
-        private Display _display;
-        private ChargeControl _chargeControl;
-        private LogFile _log;
+        private IDoor _door;
+        private IRfidReader _rfidReader;
+        private IDisplay _display;
+        private IChargeControl _chargeControl;
+        private ILog _log;
         private IUsbCharger _usbCharger;
 
 
         [SetUp]
         public void Setup()
         {
-            _display = Substitute.For<Display>();
-            _door = Substitute.For<Door>();
-            _rfidReader = Substitute.For<RFidReader>();
-            _log = Substitute.For<LogFile>("Test.txt");
-            _usbCharger = Substitute.For<UsbChargerSimulator>();
-            _chargeControl = Substitute.For<ChargeControl>(_display, _usbCharger);
+            // Brug interfaces når fakes laves med Substitute.For<>
+            // Ellers vil testene altid bestå
+            _display = Substitute.For<IDisplay>();
+            _door = Substitute.For<IDoor>();
+            _rfidReader = Substitute.For<IRfidReader>();
+            _log = Substitute.For<ILog>();
+            _usbCharger = Substitute.For<IUsbCharger>();
+            _chargeControl = Substitute.For<IChargeControl>();
             _uut = new StationControl(_rfidReader, _chargeControl, _door, _display, _log);
         }
 
@@ -44,8 +47,10 @@ namespace ChargingStation.Test.Unit
             _uut._state = StationControl.LadeskabState.Locked;
             _uut._oldId = 12345;
 
+            // Dette er white box kald af event handleren
             _uut.RfidDetected(this, new RfidReader(){Id = 12345});
 
+            // Dette er ikke asserts
             _uut._charger.StopCharge();
             _uut._door.UnlockDoor();
             _uut._log.WriteLogEntry("Skab er låst op med rfid, 12345");

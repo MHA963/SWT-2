@@ -39,6 +39,7 @@ namespace ChargingStation.lib
             _log = logFile;
 
             door.DoorEvent += DoorOpen;
+            // Der er ingen events, når man låser døren
             door.DoorEvent += DoorLocked;
 
             reader.RfidEvent += RfidDetected;
@@ -64,6 +65,7 @@ namespace ChargingStation.lib
                         _charger.StartCharge();
                         _oldId = eventArgs.Id;
 
+                        // Hvorfor bruger I ikke ILog?
                         using (var writer = File.AppendText(logFile))
                         {
                             writer.WriteLine(DateTime.Now + ": Skab låst med RFID: {0}", eventArgs.Id);
@@ -89,6 +91,8 @@ namespace ChargingStation.lib
                     {
                         _charger.StopCharge();
                         _door.UnlockDoor();
+
+                        // Hvorfor bruger I ikke ILog
                         using (var writer = File.AppendText(logFile))
                         {
                             writer.WriteLine(DateTime.Now + ": Skab låst op med RFID: {0}", eventArgs.Id);
@@ -107,6 +111,9 @@ namespace ChargingStation.lib
 
         // Her mangler de andre trigger handlere
         //trigger til Dørenlåst
+
+        // Flet denne metode sammen med DoorOpen, der er kun events på at
+        // døren åbnes og lukkes
         public void DoorLocked(object source, DoorEventArgs eventArgs)
         {
             if (eventArgs.DoorIsOpen == true) return;
