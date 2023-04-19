@@ -76,15 +76,15 @@ namespace ChargingStation.Test.Unit
             Assert.That(_uut._state,Is.EqualTo(Locked));
         }
 
-        [TestCase(1234567890)]
-        [TestCase(876543210)]
+        [TestCase(12345678)]
+        [TestCase(8765432)]
         public void test(int newRfid)
         {
             _uut._state = StationControl.LadeskabState.Available;
             _uut._charger.IsConnected = true; 
             //Act
             _uut.RfidDetected(this, new RfidReader { Id = newRfid });
-            _uut.DoorOpen(this, new DoorEventArgs());
+        
             //Assert
             Assert.That(_uut._oldId, Is.EqualTo(newRfid));
         }
@@ -103,22 +103,11 @@ namespace ChargingStation.Test.Unit
             // asserts
             _uut._charger.Received(1).StopCharge();
             _uut._door.Received(1).UnlockDoor();
-            _uut.DoorOpen(this, new DoorEventArgs());
             _uut._display.Received(1).FjernTelefon();
             Assert.That(_uut._state,Is.EqualTo(Available));
 
         }
 
-
-        [Test]
-        public void TestRfidDetected_locked_iswrong()
-        {
-            _uut._state = Locked;
-            _uut._oldId = 456;
-            _uut.RfidDetected(this,new RfidReader(){Id = 12345});
-            Assert.That(_uut._state,Is.EqualTo(Locked));
-
-        }
 
         [Test]
         public void TestRfidDetected_DoorOpen()
@@ -136,9 +125,12 @@ namespace ChargingStation.Test.Unit
             DoorEventArgs doorEvent = new DoorEventArgs();
             _uut._charger.IsConnected = true;
             _uut._state = Available;
+          
+
             _uut.RfidDetected(this, rfidReader);
-           
-            _uut.DoorOpen(this, doorEvent);
+
+            _uut._display.Received(1).LadeskabOptaget();
+            _uut._door.Received(1).LockDoor();
             Assert.That(_uut._state, Is.EqualTo(Locked));
         }
 

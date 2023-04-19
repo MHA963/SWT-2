@@ -173,13 +173,7 @@ namespace ChargingStation.lib
                         }
 
                         break;
-                    case LadeskabState.Locked:
-
-                        //Ignore
-
-
-                        break;
-
+                    
 
                 }
             }
