@@ -183,22 +183,6 @@ namespace ChargingStation.lib
 
                 }
             }
-            //else
-            //{
-            //    switch(_state)
-            //    {
-            //        case LadeskabState.Available:
-            //             Ignore
-            //            break;
-            //        case LadeskabState.DoorOpen:
-                     
-            //            break;
-            //        case LadeskabState.Locked:
-            //             Ignore
-            //            break;
-            //    }
-
-            //}
 
             Console.WriteLine("CURRENT STATE: " + _state);
         }

@@ -159,7 +159,8 @@ namespace ChargingStation.Test.Unit
         public void TestDoorClosedStateAvaialble()
         {
             _uut._state = Available;
-            _uut.DoorOpen(this,new DoorEventArgs(){DoorIsOpen = false});
+            _uut._charger.IsConnected = false;
+            _uut.RfidDetected(this, new RfidReader() { Id = 12345 });
             Assert.That(_uut._state,Is.EqualTo(Available));
 
         }
@@ -183,6 +184,17 @@ namespace ChargingStation.Test.Unit
             _uut.DoorOpen(this,new DoorEventArgs() { DoorIsOpen = true});
             
             Assert.That(_uut._state,Is.EqualTo(Locked));
+        }
+
+        [Test]
+
+        public void TestDoorOpenStateChargerDisconnected()
+        {
+            _uut._state = DoorOpen;
+            _uut._charger.IsConnected = false;
+            _uut.DoorOpen(this, new DoorEventArgs() { DoorIsOpen = true });
+
+            Assert.That(_uut._state, Is.EqualTo(Available));
         }
 
 
