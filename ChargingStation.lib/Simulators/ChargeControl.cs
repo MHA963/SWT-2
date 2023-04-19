@@ -10,9 +10,10 @@ namespace ChargingStation.lib.Simulators
 {
     public class ChargeControl : IChargeControl
     {
+
         public IUsbCharger _UsbCharger;
         public IDisplay _display;
-        // Den næste property er helt tydelig kun nødvendig for 
+        // Den næste property er helt tydelig kun nødvendig for
         // jeres test og er tegn på white box test
         public double LastCurrent { get; set; }
         public bool IsConnected { get; set; }
@@ -26,7 +27,7 @@ namespace ChargingStation.lib.Simulators
             //}
 
             _UsbCharger = usbCharger;
-            _display = display; 
+            _display = display;
             _UsbCharger.PowerEvent += OnNewCurrent;
             // Den næste opsætning virker ikke, det bliver ikke en dynamisk
             // forbindelse og vil kun virke i test
@@ -45,6 +46,11 @@ namespace ChargingStation.lib.Simulators
             _UsbCharger.StopCharge();
         }
 
+        public IUsbCharger UsbCharger()
+        {
+            return _UsbCharger;
+        }
+
         public void OnNewCurrent(object sender, PowerEventArgs e)
         {
             if (e.Power == LastCurrent) return;
@@ -54,6 +60,7 @@ namespace ChargingStation.lib.Simulators
 
             switch (e.Power)
             {
+
                 case 0.0:
                     if (_lastState == State.NotCharging) return;
                     _lastState = State.NotCharging;
@@ -68,12 +75,13 @@ namespace ChargingStation.lib.Simulators
                     _display.TelefonTilsluttet();
                     _lastState = State.Charging;
                     break;
-                case > 500.0:
+                default:
                     if (_lastState == State.Error) return;
                     _display.OpladerFejl();
                     _lastState = State.Error;
                     StopCharge();
                     break;
+
             }
         }
 

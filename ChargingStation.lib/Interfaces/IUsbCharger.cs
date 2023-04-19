@@ -14,8 +14,7 @@ namespace ChargingStation.lib.Interfaces
     {
         //Event triggered on new power value
         event EventHandler<PowerEventArgs> PowerEvent;
-        
-        //Direct access to the current power value        
+        //Direct access to the current power value
         double PowerValue { get; }
 
         public bool Connected { get; set; }

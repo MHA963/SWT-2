@@ -14,7 +14,6 @@ namespace ChargingStation.lib.Simulators
         {
             Console.WriteLine("Tilslut telefon");
         }
-         
         public void IndlaesRFID()
         {
             Console.WriteLine("Skabet er låst, telefonen lades nu op. Brug RFID til at låse op");
