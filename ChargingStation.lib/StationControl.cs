@@ -49,7 +49,7 @@ namespace ChargingStation.lib
 
         private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
-        // Her mangler constructor
+        
 
         // Eksempel på event handler for eventet "RFID Detected" fra tilstandsdiagrammet for klassen
         public void RfidDetected(object source, RfidReader eventArgs)
@@ -72,7 +72,7 @@ namespace ChargingStation.lib
                     }
                     else
                     {
-                        Console.WriteLine("Din telefon er ikke ordentlig tilsluttet. Prøv igen.");
+                        _display.OpladerFejl();
                     }
 
                     break;
@@ -96,85 +96,111 @@ namespace ChargingStation.lib
                     }
                     else
                     {
-                        Console.WriteLine("Forkert RFID tag");
+                        _display.RFIDFejl();
                     }
 
                     break;
             }
         }
 
-       
+     
+
+
         //trigger til Dørenlåst
 
         // Flet denne metode sammen med DoorOpen, der er kun events på at
         // døren åbnes og lukkes
-        public void DoorLocked(object source, DoorEventArgs eventArgs)
-        {
-            if (eventArgs.DoorIsOpen == true) return;
-            
-            switch (_state)
-            {
-                case LadeskabState.Available:
-                    // Ignore
-                    break;
+        //public void DoorLocked(object source, DoorEventArgs eventArgs)
+        //{
+        //    if (eventArgs.DoorIsOpen == true) return;
 
-                case LadeskabState.DoorOpen:
+        //    switch (_state)
+        //    {
+        //        case LadeskabState.Available:
+        //            // Ignore
+        //            break;
 
-                    if (_charger.IsConnected)
-                    {
-                        _charger.StartCharge();
-                        
-                        _log.WriteLogEntry("Skab låst med RFID: " + _oldId);
+        //        case LadeskabState.DoorOpen:
 
-                        Console.WriteLine("Din telefon oplader nu og er låst i skabet. Brug dit RFID tag til at låse op.");
-                        _state = LadeskabState.Locked;
-                        _display.RFIDLåst();
-                    }
-                    
-                    break;
+        //            if (_charger.IsConnected)
+        //            {
+        //                _charger.StartCharge();
 
-                case LadeskabState.Locked:
-                    // ignore
+        //                _log.WriteLogEntry("Skab låst med RFID: " + _oldId);
 
-                    break;
-            }
-            Console.WriteLine("CURRENT STATE: " + _state);
-        }
+        //                Console.WriteLine("Din telefon oplader nu og er låst i skabet. Brug dit RFID tag til at låse op.");
+        //                _state = LadeskabState.Locked;
+        //                _display.RFIDLåst();
+        //            }
+
+        //            break;
+
+        //        case LadeskabState.Locked:
+        //            // ignore
+
+        //            break;
+        //    }
+
+        //    Console.WriteLine("CURRENT STATE: " + _state);
+        //}
 
         //trigger til Dørenåbnet
         public void DoorOpen(object source, DoorEventArgs eventArgs)
         {
-            if (eventArgs.DoorIsOpen == false) return;
-            switch (_state)
+            if (eventArgs.DoorIsOpen)
             {
-                case LadeskabState.Available:
-                    // Ignore
-                    _display.TilslutTelefon();
-                    _state = LadeskabState.DoorOpen;
-                    _log.WriteLogEntry("Skab er åben");
-                    break;
-                case LadeskabState.DoorOpen:
-                    
-                    if (_charger.IsConnected)
-                    {
-                        _charger.StartCharge();
+                switch (_state)
+                {
+                    case LadeskabState.Available:
+                        // Ignore
+                        _display.TilslutTelefon();
+                        _state = LadeskabState.DoorOpen;
+                        _log.WriteLogEntry("Skab er åben");
+                        break;
+                    case LadeskabState.DoorOpen:
 
-                        _log.WriteLogEntry("Skab låst med RFID: " + _oldId);
+                        if (_charger.IsConnected)
+                        {
+                            _charger.StartCharge();
+                            _state = LadeskabState.Locked;
+                            _display.DørLaest();
+                        }
+                        else
+                        {
+                            _state = LadeskabState.Available;
+                            _display.FjernTelefon();
+                            _log.WriteLogEntry("Der er ikke tilsluttet en telefon til opladning. Skabet er åbent og låst op.");
+                        }
 
-                        Console.WriteLine("Din telefon oplader nu og er låst i skabet. Brug dit RFID tag til at låse op.");
-                        _state = LadeskabState.Locked;
-                        _display.RFIDLåst();
-                    }
+                        break;
+                    case LadeskabState.Locked:
 
-                    break;
-                case LadeskabState.Locked:
-                   
-                    //Ignore
+                        //Ignore
 
 
-                    break;
+                        break;
+
+
+                }
             }
+            //else
+            //{
+            //    switch(_state)
+            //    {
+            //        case LadeskabState.Available:
+            //             Ignore
+            //            break;
+            //        case LadeskabState.DoorOpen:
+                     
+            //            break;
+            //        case LadeskabState.Locked:
+            //             Ignore
+            //            break;
+            //    }
 
+            //}
+
+            Console.WriteLine("CURRENT STATE: " + _state);
         }
 
     }
