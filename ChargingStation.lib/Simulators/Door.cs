@@ -5,8 +5,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ChargingStation.lib.Interfaces;
-
 
 namespace ChargingStation.lib.Simulators
 {

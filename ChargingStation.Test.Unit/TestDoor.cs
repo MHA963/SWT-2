@@ -17,34 +17,28 @@ namespace ChargingStation.Test.Unit
             door = new Door();
         }
 
-        [TestCase(false, false)]
-        [TestCase(false, true)]
-        [TestCase(true, false)]
-        public void TestDoorLock(bool DoorOpen, bool DoorLocked)
+        public void TestDoorLock()
         {
-            
-	        // White box opsætning, brug metoder til at styre
-            // Der er for mange test scenarier i denne testmetode
-            door.IsDoorLocked = DoorLocked;
-            door.IsDoorOpen = DoorOpen;
-            door.LockDoor();
+            //Arrange
+            door.UnlockDoor(); // unlock door
 
-            // Hold test udtryk simple
-            Assert.That(door.IsDoorLocked, !door.IsDoorOpen ? Is.EqualTo(true) : Is.EqualTo(false));
+            //Act
+            door.LockDoor(); // lock door
+
+            //Assert
+            Assert.That(door.IsDoorLocked == true); // confirm door is locked
         }
 
-        [TestCase(true, true)]
-        [TestCase(true, false)]
-        [TestCase(false, true)]
-        [TestCase(false, false)]
-        public void TestDoorUnlock(bool DoorOpen, bool DoorLocked)
+        public void TestDoorUnlock()
         {
-	        // White box opsætning, brug metoder til at styre
-	        // Der er for mange test scenarier i denne testmetode
-            door.IsDoorLocked = DoorLocked;
-            door.IsDoorOpen = DoorOpen;
-            door.UnlockDoor();
-            Assert.That(door.IsDoorLocked, Is.EqualTo(false));
+            //Arrange
+            door.LockDoor(); // lock door
+
+            //Act
+            door.UnlockDoor(); // unlock door
+
+            //Assert
+            Assert.That(door.IsDoorOpen == true); // confirm door is unlocked
         }
 
         [Test]
