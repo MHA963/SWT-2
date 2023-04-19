@@ -40,13 +40,12 @@ namespace ChargingStation.lib
 
             door.DoorEvent += DoorOpen;
             // Der er ingen events, når man låser døren
-            door.DoorEvent += DoorLocked;
+            //door.DoorEvent += DoorLocked;
 
             reader.RfidEvent += RfidDetected;
 
         }
 
-        public bool IsConnected { get; set; }
 
         private string logFile = "logfile.txt"; // Navnet på systemets log-fil
 
@@ -66,10 +65,7 @@ namespace ChargingStation.lib
                         _oldId = eventArgs.Id;
 
                         // Hvorfor bruger I ikke ILog?
-                        using (var writer = File.AppendText(logFile))
-                        {
-                            writer.WriteLine(DateTime.Now + ": Skab låst med RFID: {0}", eventArgs.Id);
-                        }
+                        _log.WriteLogEntry("Skab er låst med rfid, " + eventArgs.Id);
 
                         _display.LadeskabOptaget();
                         _state = LadeskabState.Locked;
@@ -93,10 +89,8 @@ namespace ChargingStation.lib
                         _door.UnlockDoor();
 
                         // Hvorfor bruger I ikke ILog
-                        using (var writer = File.AppendText(logFile))
-                        {
-                            writer.WriteLine(DateTime.Now + ": Skab låst op med RFID: {0}", eventArgs.Id);
-                        }
+                        _log.WriteLogEntry("Skab låst op med RFID: " + eventArgs.Id);
+
                         _display.FjernTelefon();
                         _state = LadeskabState.Available;
                     }
@@ -109,7 +103,7 @@ namespace ChargingStation.lib
             }
         }
 
-        // Her mangler de andre trigger handlere
+       
         //trigger til Dørenlåst
 
         // Flet denne metode sammen med DoorOpen, der er kun events på at
@@ -129,10 +123,8 @@ namespace ChargingStation.lib
                     if (_charger.IsConnected)
                     {
                         _charger.StartCharge();
-                        using (var writer = File.AppendText(logFile))
-                        {
-                            writer.WriteLine(DateTime.Now + ": Skab låst med RFID: {0}", _oldId);
-                        }
+                        
+                        _log.WriteLogEntry("Skab låst med RFID: " + _oldId);
 
                         Console.WriteLine("Din telefon oplader nu og er låst i skabet. Brug dit RFID tag til at låse op.");
                         _state = LadeskabState.Locked;
@@ -159,13 +151,21 @@ namespace ChargingStation.lib
                     // Ignore
                     _display.TilslutTelefon();
                     _state = LadeskabState.DoorOpen;
-                    using (var writer = File.AppendText(logFile))
-                    {
-                        writer.WriteLine(DateTime.Now + "Skab er åben" );
-                    }
+                    _log.WriteLogEntry("Skab er åben");
                     break;
                 case LadeskabState.DoorOpen:
-                    // Ignore
+                    
+                    if (_charger.IsConnected)
+                    {
+                        _charger.StartCharge();
+
+                        _log.WriteLogEntry("Skab låst med RFID: " + _oldId);
+
+                        Console.WriteLine("Din telefon oplader nu og er låst i skabet. Brug dit RFID tag til at låse op.");
+                        _state = LadeskabState.Locked;
+                        _display.RFIDLåst();
+                    }
+
                     break;
                 case LadeskabState.Locked:
                    
