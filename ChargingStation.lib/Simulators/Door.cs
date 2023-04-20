@@ -33,11 +33,12 @@ namespace ChargingStation.lib.Simulators
                 return;
             }
             IsDoorLocked = false;
+            IsDoorOpen = true;
         }
 
         public void LockDoor()
         {
-            if (IsDoorOpen || IsDoorLocked)
+            if (IsDoorLocked)
             {
                 return;
             }

@@ -17,6 +17,7 @@ namespace ChargingStation.Test.Unit
             door = new Door();
         }
 
+        [Test]
         public void TestDoorLock()
         {
             //Arrange
@@ -29,6 +30,19 @@ namespace ChargingStation.Test.Unit
             Assert.That(door.IsDoorLocked == true); // confirm door is locked
         }
 
+        [Test]
+        public void TestDoorLockedAlready()
+        {
+            //Arrange
+            door.LockDoor(); // lock door
+
+            //Act
+            door.LockDoor(); // lock door
+
+            //Assert
+            Assert.That(door.IsDoorLocked == true); // confirm door is locked
+        }
+        [Test]
         public void TestDoorUnlock()
         {
             //Arrange
