@@ -181,18 +181,6 @@ namespace ChargingStation.Test.Unit
 
         #endregion
 
-        //[Test]
-        //public void TestCase0OnNewCurrent()
-        //{
-        //    //double initialvalue = 500.0;
-        //    double value = 1.0;
-
-
-        //    //_chargecontrol._UsbCharger.PowerEvent += Raise.EventWith(new PowerEventArgs() { Power = initialvalue });
-        //    _chargecontrol._UsbCharger.PowerEvent += Raise.EventWith(new PowerEventArgs() { Power = value });
-        //    // Dette tester faken - helt unødvendigt
-        //    Assert.That(_chargecontrol._UsbCharger.PowerValue, Is.EqualTo(value));
-
-        //}
+       
     }
 }

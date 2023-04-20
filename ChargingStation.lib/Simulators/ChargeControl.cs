@@ -13,26 +13,19 @@ namespace ChargingStation.lib.Simulators
 
         public IUsbCharger _UsbCharger;
         public IDisplay _display;
-        // Den næste property er helt tydelig kun nødvendig for
-        // jeres test og er tegn på white box test
         public double LastCurrent { get; set; }
         public bool IsConnected { get; set; }
         public enum State { Charging, NotCharging, FinishedCharging, Error }
         public State _lastState = State.NotCharging;
         public ChargeControl(IDisplay display, IUsbCharger usbCharger)
         {
-            //if (usbCharger == null)
-            //{
-            //    throw new ArgumentNullException(nameof(usbCharger));
-            //}
+           
 
             _UsbCharger = usbCharger;
             _display = display;
             _UsbCharger.PowerEvent += OnNewCurrent;
-            // Den næste opsætning virker ikke, det bliver ikke en dynamisk
-            // forbindelse og vil kun virke i test
             IsConnected = _UsbCharger.Connected;
-            // Unødvendig
+            
             LastCurrent = _UsbCharger.PowerValue;
 
         }

@@ -16,7 +16,7 @@ namespace ChargingStation.Test.Unit
 {
     public class TestStationControl
     {
-        // Brug interfaces for dependencies
+        // Bruger interfaces for dependencies
         private StationControl _uut;
         private IDoor _door;
         private IRfidReader _rfidReader;
@@ -29,8 +29,8 @@ namespace ChargingStation.Test.Unit
         [SetUp]
         public void Setup()
         {
-            // Brug interfaces når fakes laves med Substitute.For<>
-            // Ellers vil testene altid bestå
+            // Bruger interfaces når fakes laves med Substitute.For<>
+            
             _display = Substitute.For<IDisplay>();
             _door = Substitute.For<IDoor>();
             _rfidReader = Substitute.For<IRfidReader>();

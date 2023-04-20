@@ -21,7 +21,6 @@ namespace ChargingStation.lib
             DoorOpen
         };
 
-        // Her mangler flere member variable
         public LadeskabState _state;
         public IChargeControl _charger;
         public int _oldId;
@@ -29,6 +28,7 @@ namespace ChargingStation.lib
         public IDisplay _display;
         public ILog _log;
         public IRfidReader _reader;
+        private string logFile = "logfile.txt"; // Navnet på systemets log-fil
         public StationControl(IRfidReader reader, IChargeControl charger, IDoor door, IDisplay display, ILog logFile)
         {
             _state = LadeskabState.Available;
@@ -40,14 +40,13 @@ namespace ChargingStation.lib
 
             door.DoorEvent += DoorOpen;
             // Der er ingen events, når man låser døren
-            //door.DoorEvent += DoorLocked;
 
             reader.RfidEvent += RfidDetected;
 
         }
 
 
-        private string logFile = "logfile.txt"; // Navnet på systemets log-fil
+        
 
         
 
@@ -64,7 +63,6 @@ namespace ChargingStation.lib
                         _charger.StartCharge();
                         _oldId = eventArgs.Id;
 
-                        // Hvorfor bruger I ikke ILog?
                         _log.WriteLogEntry("Skab er låst med rfid, " + eventArgs.Id);
 
                         _display.LadeskabOptaget();
@@ -88,7 +86,6 @@ namespace ChargingStation.lib
                         _charger.StopCharge();
                         _door.UnlockDoor();
 
-                        // Hvorfor bruger I ikke ILog
                         _log.WriteLogEntry("Skab låst op med RFID: " + eventArgs.Id);
 
                         _display.FjernTelefon();
@@ -106,45 +103,6 @@ namespace ChargingStation.lib
      
 
 
-        //trigger til Dørenlåst
-
-        // Flet denne metode sammen med DoorOpen, der er kun events på at
-        // døren åbnes og lukkes
-        //public void DoorLocked(object source, DoorEventArgs eventArgs)
-        //{
-        //    if (eventArgs.DoorIsOpen == true) return;
-
-        //    switch (_state)
-        //    {
-        //        case LadeskabState.Available:
-        //            // Ignore
-        //            break;
-
-        //        case LadeskabState.DoorOpen:
-
-        //            if (_charger.IsConnected)
-        //            {
-        //                _charger.StartCharge();
-
-        //                _log.WriteLogEntry("Skab låst med RFID: " + _oldId);
-
-        //                Console.WriteLine("Din telefon oplader nu og er låst i skabet. Brug dit RFID tag til at låse op.");
-        //                _state = LadeskabState.Locked;
-        //                _display.RFIDLåst();
-        //            }
-
-        //            break;
-
-        //        case LadeskabState.Locked:
-        //            // ignore
-
-        //            break;
-        //    }
-
-        //    Console.WriteLine("CURRENT STATE: " + _state);
-        //}
-
-        //trigger til Dørenåbnet
         public void DoorOpen(object source, DoorEventArgs eventArgs)
         {
             if (eventArgs.DoorIsOpen)
